@@ -22,7 +22,7 @@ let controls;
 const modelConfigs = [
   {
     name: "cesta",
-    position: { x: 1, y: 0, z: 0 },
+    position: { x: 0, y: 0, z: 0 },
     scale: { x: 1, y: 1, z: 1 },
     rotation: { x: 0, y: Math.PI / 2, z: 0 }
   },
@@ -40,7 +40,7 @@ const modelConfigs = [
   },
   {
     name: "pesec",
-    position: { x: -80, y: 5, z: -300 }, // Adjusted to sit directly on top of cesta
+    position: { x: -80, y: 5, z: -500 }, // Adjusted to sit directly on top of cesta
     scale: { x: 1, y: 1, z: 1 }, // Match the scale to cesta
     rotation: { x: 0, y: Math.PI, z: 0 } // Reset rotation for alignment
   }
@@ -51,6 +51,11 @@ const modelConfigs = [
 const loader = new GLTFLoader();
 
 // Load each model in the list
+let carObject = null; // Reference for the car (kabina)
+
+
+
+// Load each model in the list
 modelConfigs.forEach((config) => {
   loader.load(
     `./models/${config.name}/scene.gltf`,
@@ -59,6 +64,20 @@ modelConfigs.forEach((config) => {
       object.position.set(config.position.x, config.position.y, config.position.z);
       object.scale.set(config.scale.x, config.scale.y, config.scale.z);
       object.rotation.set(config.rotation.x, config.rotation.y, config.rotation.z);
+
+      // If the current model is the car (kabina), store the reference and parent the camera
+      if (config.name === "kabina") {
+        carObject = object;
+      
+        // Add the camera as a child of the car object (so it moves with the car)
+        carObject.add(camera);
+      
+        // Position the camera inside the car (driver's seat)
+        camera.position.set(-50, 25, 60); // Adjust the camera's position here
+        camera.lookAt(0, 2, 0); // Make the camera look straight ahead at a point in front of the car
+      }
+      
+
       scene.add(object);
     },
     function (xhr) {
@@ -98,8 +117,15 @@ controls = new OrbitControls(camera, renderer.domElement);
 // Render the scene
 function animate() {
   requestAnimationFrame(animate);
+
+  // Move the car forward if it's loaded
+  if (carObject) {
+    carObject.position.z -= 1; // Move the car along the Z-axis
+  }
+
   renderer.render(scene, camera);
 }
+
 
 // Add a listener to the window, so we can resize the window and the camera
 window.addEventListener("resize", function () {
