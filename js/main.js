@@ -22,7 +22,7 @@ let controls;
 const modelConfigs = [
   {
     name: "cesta",
-    position: { x: 0, y: 0, z: 0 },
+    position: { x: 1, y: 0, z: 0 },
     scale: { x: 1, y: 1, z: 1 },
     rotation: { x: 0, y: Math.PI / 2, z: 0 }
   },
