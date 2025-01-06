@@ -8,7 +8,8 @@ import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/l
 // Create a Three.JS Scene
 const scene = new THREE.Scene();
 // Create a new camera with positions and angles
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
+
 
 // Keep track of the mouse position, so we can make the eye move
 let mouseX = window.innerWidth / 2;
@@ -18,28 +19,47 @@ let mouseY = window.innerHeight / 2;
 let controls;
 
 // List of models to load
-const modelsToRender = ['kabina', 'dino', 'model3'];  // Add more model names here
+const modelConfigs = [
+  {
+    name: "cesta",
+    position: { x: 0, y: 0, z: 0 },
+    scale: { x: 1, y: 1, z: 1 },
+    rotation: { x: 0, y: Math.PI / 2, z: 0 }
+  },
+  {
+    name: "kabina",
+    position: { x: 80, y: 1, z: 200 }, // Adjusted to sit directly on top of cesta
+    scale: { x: 1, y: 1, z: 1 }, // Match the scale to cesta
+    rotation: { x: 0, y: 0, z: 0 } // Reset rotation for alignment
+  },
+  {
+    name: "kolesar",
+    position: { x: 100, y: 8, z: 200 }, // Adjusted to sit directly on top of cesta
+    scale: { x: 1, y: 1, z: 1 }, // Match the scale to cesta
+    rotation: { x: 0, y: Math.PI, z: 0 } // Reset rotation for alignment
+  }
+];
+
 
 // Instantiate a loader for the .gltf file
 const loader = new GLTFLoader();
 
 // Load each model in the list
-modelsToRender.forEach((model) => {
+modelConfigs.forEach((config) => {
   loader.load(
-    `./models/${model}/scene.gltf`, // Path to the model file
+    `./models/${config.name}/scene.gltf`,
     function (gltf) {
-      // If the file is loaded, add it to the scene
       const object = gltf.scene;
-      object.position.set(Math.random() * 10 - 5, 0, Math.random() * 10 - 5); // Random positioning for demonstration
+      object.position.set(config.position.x, config.position.y, config.position.z);
+      object.scale.set(config.scale.x, config.scale.y, config.scale.z);
+      object.rotation.set(config.rotation.x, config.rotation.y, config.rotation.z);
       scene.add(object);
     },
     function (xhr) {
-      // While it is loading, log the progress
-      console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+      console.log(`${config.name} ${(xhr.loaded / xhr.total * 100).toFixed(2)}% loaded`);
     },
     function (error) {
-      // If there is an error, log it
-      console.error(error);
+      console.error(`Error loading ${config.name}:`, error);
     }
   );
 });
