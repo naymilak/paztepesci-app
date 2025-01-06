@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Visualizacija</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        /* Style for the toolbars */
+        #top-bar, #bottom-bar {
+            position: absolute;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            z-index: 100;
+        }
+        #top-bar {
+            top: 0;
+        }
+        #bottom-bar {
+            bottom: 0;
+        }
+        /* Menu */
+        #menu {
+            cursor: pointer;
+            font-size: 20px;
+            padding: 10px;
+        }
+        #start-animation {
+            font-size: 20px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Toolbar -->
+    <div id="top-bar">
+        <div id="menu">Meni</div>
+    </div>
+
+    <!-- Scene will be rendered here -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.157.0/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.157.0/examples/jsm/loaders/GLTFLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.2.3/mqtt.min.js"></script>
+    <script src="main.js"></script>
+
+    <!-- Bottom Toolbar -->
+    <div id="bottom-bar">
+        <button id="start-animation">Start animation</button>
+    </div>
+
+</body>
+</html>
