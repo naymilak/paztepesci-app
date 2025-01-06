@@ -3,7 +3,7 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Ensures that the taskbar is at the top */
   height: 100vh; /* Ensure the body fills the viewport height */
   overflow: hidden; /* Prevent scrollbars */
 }
@@ -20,12 +20,15 @@ body {
   box-sizing: border-box;
   z-index: 100; /* Ensure it is on top of other elements */
   width: 100%; /* Ensure the taskbar spans the full width */
+  position: fixed; /* Keep it fixed at the top */
+  top: 0;
 }
 
 /* Main content container */
 #container3D {
   flex-grow: 1; /* Makes it fill the available space below the taskbar */
   background-color: #f0f0f0; /* Placeholder for 3D canvas */
+  margin-top: 100px; /* Add margin to prevent content from being hidden behind the taskbar */
 }
 
 /* Left section styles */
