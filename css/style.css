@@ -1,32 +1,113 @@
-/* style.css */
+/* General body styles */
 body {
   margin: 0;
-  height: 100vh; /* Full viewport height */
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Ensure the body fills the viewport height */
+  overflow: hidden; /* Prevent scrollbars */
 }
 
+/* Main content container */
 #container3D {
-  width: 100%;
-  height: 100%; /* Take up the full height except for the taskbar */
-  background-color: #f0f0f0; /* Example background for the 3D scene */
+  flex-grow: 1; /* Makes it fill the available space above the taskbar */
+  background-color: #f0f0f0; /* Placeholder for 3D canvas */
 }
 
+/* Taskbar styles */
 #taskbar {
-  position: fixed; /* Fixed at the bottom */
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #333; /* Dark background for visibility */
   color: white;
-  padding: 10px;
-  text-align: right; /* Align the button to the right */
+  height: 100px; /* Fixed height */
+  box-sizing: border-box;
+  z-index: 100; /* Ensure it is on top of other elements */
+}
+
+/* Left section styles */
+#taskbar .left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#taskbar .left p {
+  margin: 0;
+  font-size: 18px;
+}
+
+#taskbar #applyButton {
+  margin-top: 5px;
+  background-color: #555;
+  border: none;
+  color: white;
+  padding: 10px 20px; /* Same padding as Start/Stop buttons */
+  cursor: pointer;
+  font-size: 16px; /* Same font size as Start/Stop buttons */
+  max-width: 100px;
+}
+
+#taskbar #applyButton:hover {
+  background-color: #777;
+}
+
+/* Middle section styles */
+#taskbar .middle {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin-left: 20px;
+  flex: 10;
+}
+
+#taskbar .input-group {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+#taskbar .input-group label {
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+#taskbar .input-group input {
+  padding: 5px;
+  font-size: 14px;
+}
+
+#taskbar #carSpeed {
+  width: 150px;
+}
+
+/* Right section styles */
+#taskbar .right {
+  text-align: right;
+}
+
+#taskbar .right p {
+  margin: 0;
+  font-size: 18px;
+}
+
+/* Buttons container */
+#taskbar .buttons {
+  margin-top: 5px;
 }
 
 #taskbar button {
   background-color: #555;
   border: none;
-  padding: 10px 20px;
   color: white;
+  padding: 10px 20px;
+  margin-left: 5px;
   cursor: pointer;
+  font-size: 16px;
 }
 
 #taskbar button:hover {
