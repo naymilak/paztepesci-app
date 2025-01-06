@@ -22,19 +22,25 @@ let controls;
 const modelConfigs = [
   {
     name: "cesta",
-    position: { x: 0, y: 0, z: 0 },
+    position: { x: 1, y: 0, z: 0 },
     scale: { x: 1, y: 1, z: 1 },
     rotation: { x: 0, y: Math.PI / 2, z: 0 }
   },
   {
     name: "kabina",
-    position: { x: 80, y: 1, z: 200 }, // Adjusted to sit directly on top of cesta
+    position: { x: 80, y: 3, z: 500 }, // Adjusted to sit directly on top of cesta
     scale: { x: 1, y: 1, z: 1 }, // Match the scale to cesta
     rotation: { x: 0, y: 0, z: 0 } // Reset rotation for alignment
   },
   {
     name: "kolesar",
-    position: { x: 100, y: 8, z: 200 }, // Adjusted to sit directly on top of cesta
+    position: { x: 100, y: 11, z: 200 }, // Adjusted to sit directly on top of cesta
+    scale: { x: 1, y: 1, z: 1 }, // Match the scale to cesta
+    rotation: { x: 0, y: Math.PI, z: 0 } // Reset rotation for alignment
+  },
+  {
+    name: "pesec",
+    position: { x: -80, y: 5, z: -300 }, // Adjusted to sit directly on top of cesta
     scale: { x: 1, y: 1, z: 1 }, // Match the scale to cesta
     rotation: { x: 0, y: Math.PI, z: 0 } // Reset rotation for alignment
   }
