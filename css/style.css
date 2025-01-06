@@ -8,12 +8,6 @@ body {
   overflow: hidden; /* Prevent scrollbars */
 }
 
-/* Main content container */
-#container3D {
-  flex-grow: 1; /* Makes it fill the available space above the taskbar */
-  background-color: #f0f0f0; /* Placeholder for 3D canvas */
-}
-
 /* Taskbar styles */
 #taskbar {
   display: flex;
@@ -25,6 +19,13 @@ body {
   height: 100px; /* Fixed height */
   box-sizing: border-box;
   z-index: 100; /* Ensure it is on top of other elements */
+  width: 100%; /* Ensure the taskbar spans the full width */
+}
+
+/* Main content container */
+#container3D {
+  flex-grow: 1; /* Makes it fill the available space below the taskbar */
+  background-color: #f0f0f0; /* Placeholder for 3D canvas */
 }
 
 /* Left section styles */
