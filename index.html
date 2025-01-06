@@ -1,22 +1,42 @@
-<!--
-  EYE FREE MODEL 3D BY Oscar creativo by OSCAR CREATIVO is licensed under Creative Commons Attribution.
-  Juvenile Teratophoneus curriei byrankinstudio is licensed under Creative Commons Attribution.
--->
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>A simple Three.JS App</title>
+    <title>Pazte Pesci - 3D Vizualizacija DEMO</title>
     <link rel="stylesheet" href="css/style.css" />
+    <!-- Website Version: 1.1.0 -->
   </head>
   <body>
-    <header>
-      <h1>A simple three.js app</h1>
-    </header>
-
     <main>
       <div id="container3D"></div>
     </main>
+
+    <div id="taskbar">
+
+      <div class="left">
+        <p>Settings:</p>
+        <button id="applyButton">Apply</button>
+      </div>
+
+      <div class="middle">
+        <div class="input-group">
+          <label for="carSpeed">Car speed [km/h]:</label>
+          <input type="text" id="carSpeed" placeholder="Enter speed" value="30" />
+        </div>
+        <div class="input-group">
+          <label for="showLine">Show line:</label>
+          <input type="checkbox" id="showLine" />
+        </div>
+      </div>
+
+      <div class="right">
+        <p>Animation</p>
+        <div class="buttons">
+          <button id="startButton">Start</button>
+          <button id="stopButton">Stop</button>
+        </div>
+      </div>
+    </div>
 
     <script type="module" src="js/main.js"></script>
   </body>
