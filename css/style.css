@@ -1,24 +1,34 @@
+/* style.css */
 body {
   margin: 0;
-  font-family: "Montserrat", sans-serif;
-  background-color: #000;
+  height: 100vh; /* Full viewport height */
 }
 
-header {
-  margin-top: 3em;
-  text-align: center;
-  color: white;
+#container3D {
+  width: 100%;
+  height: 100%; /* Take up the full height except for the taskbar */
+  background-color: #f0f0f0; /* Example background for the 3D scene */
 }
 
-header h1 {
-  font-size: 2em;
-  font-weight: 900;
-}
-
-#container3D canvas {
-  width: 100vw !important;
-  height: 100vh !important;
-  position: absolute;
-  top: 0;
+#taskbar {
+  position: fixed; /* Fixed at the bottom */
   left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  text-align: right; /* Align the button to the right */
+}
+
+#taskbar button {
+  background-color: #555;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+}
+
+#taskbar button:hover {
+  background-color: #777;
 }
