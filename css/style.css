@@ -117,3 +117,20 @@ body {
 #taskbar button:hover {
   background-color: #777;
 }
+
+/* Update button styles for Start/Stop and Reset buttons */
+#startStopButton {
+  background-color: #007bff; /* Blue for better distinction */
+}
+
+#startStopButton:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+#resetButton {
+  background-color: #dc3545; /* Red for reset */
+}
+
+#resetButton:hover {
+  background-color: #a71d2a; /* Darker red on hover */
+}
