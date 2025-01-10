@@ -11,14 +11,10 @@ const scene = new THREE.Scene();
 // Create a new camera with positions and angles
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
 
-<<<<<<< HEAD
 // Keep track of the mouse position, so we can make the eye move
 let mouseX = window.innerWidth / 2;
 let mouseY = window.innerHeight / 2;
 
-// OrbitControls allow the camera to move around the scene
-let controls;
-=======
 // Variables for car movement
 let isCarMoving = false; // To track if the car is moving
 let carObject = null; // Reference for the car (kabina)
@@ -28,7 +24,6 @@ const defaultCarSpeed = 30; // Default speed for reset
 // Store the initial positions for reset
 const initialCarPosition = { x: 80, y: 3, z: 500 };
 const initialCameraPosition = { x: -50, y: 25, z: 60 };
->>>>>>> 4ba59cca2e5040903553eee72ba62793d693a3f9
 
 // List of models to load
 const modelConfigs = [
