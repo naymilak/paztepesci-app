@@ -10,7 +10,6 @@ const scene = new THREE.Scene();
 // Create a new camera with positions and angles
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
 
-
 // Keep track of the mouse position, so we can make the eye move
 let mouseX = window.innerWidth / 2;
 let mouseY = window.innerHeight / 2;
@@ -142,3 +141,12 @@ document.onmousemove = (e) => {
 
 // Start the 3D rendering
 animate();
+export function getCamera(){
+  return camera; 
+}
+export function getScene(){
+  return scene;
+}
+export function getCarObject(){
+  return carObject;
+}
