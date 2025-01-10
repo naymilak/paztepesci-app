@@ -7,15 +7,28 @@ import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/l
 
 // Create a Three.JS Scene
 const scene = new THREE.Scene();
+
 // Create a new camera with positions and angles
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
 
+<<<<<<< HEAD
 // Keep track of the mouse position, so we can make the eye move
 let mouseX = window.innerWidth / 2;
 let mouseY = window.innerHeight / 2;
 
 // OrbitControls allow the camera to move around the scene
 let controls;
+=======
+// Variables for car movement
+let isCarMoving = false; // To track if the car is moving
+let carObject = null; // Reference for the car (kabina)
+let carSpeed = 30; // Default speed
+const defaultCarSpeed = 30; // Default speed for reset
+
+// Store the initial positions for reset
+const initialCarPosition = { x: 80, y: 3, z: 500 };
+const initialCameraPosition = { x: -50, y: 25, z: 60 };
+>>>>>>> 4ba59cca2e5040903553eee72ba62793d693a3f9
 
 // List of models to load
 const modelConfigs = [
@@ -27,34 +40,27 @@ const modelConfigs = [
   },
   {
     name: "kabina",
-    position: { x: 80, y: 3, z: 500 }, // Adjusted to sit directly on top of cesta
-    scale: { x: 1, y: 1, z: 1 }, // Match the scale to cesta
-    rotation: { x: 0, y: 0, z: 0 } // Reset rotation for alignment
+    position: initialCarPosition,
+    scale: { x: 1, y: 1, z: 1 },
+    rotation: { x: 0, y: 0, z: 0 }
   },
   {
     name: "kolesar",
-    position: { x: 100, y: 11, z: 200 }, // Adjusted to sit directly on top of cesta
-    scale: { x: 1, y: 1, z: 1 }, // Match the scale to cesta
-    rotation: { x: 0, y: Math.PI, z: 0 } // Reset rotation for alignment
+    position: { x: 100, y: 11, z: 200 },
+    scale: { x: 1, y: 1, z: 1 },
+    rotation: { x: 0, y: Math.PI, z: 0 }
   },
   {
     name: "pesec",
-    position: { x: -80, y: 5, z: -500 }, // Adjusted to sit directly on top of cesta
-    scale: { x: 1, y: 1, z: 1 }, // Match the scale to cesta
-    rotation: { x: 0, y: Math.PI, z: 0 } // Reset rotation for alignment
+    position: { x: -80, y: 5, z: -500 },
+    scale: { x: 1, y: 1, z: 1 },
+    rotation: { x: 0, y: Math.PI, z: 0 }
   }
 ];
-
 
 // Instantiate a loader for the .gltf file
 const loader = new GLTFLoader();
 
-// Load each model in the list
-let carObject = null; // Reference for the car (kabina)
-
-
-
-// Load each model in the list
 modelConfigs.forEach((config) => {
   loader.load(
     `./models/${config.name}/scene.gltf`,
@@ -64,18 +70,13 @@ modelConfigs.forEach((config) => {
       object.scale.set(config.scale.x, config.scale.y, config.scale.z);
       object.rotation.set(config.rotation.x, config.rotation.y, config.rotation.z);
 
-      // If the current model is the car (kabina), store the reference and parent the camera
       if (config.name === "kabina") {
         carObject = object;
-      
-        // Add the camera as a child of the car object (so it moves with the car)
+
         carObject.add(camera);
-      
-        // Position the camera inside the car (driver's seat)
-        camera.position.set(-50, 25, 60); // Adjust the camera's position here
-        camera.lookAt(0, 2, 0); // Make the camera look straight ahead at a point in front of the car
+        camera.position.set(initialCameraPosition.x, initialCameraPosition.y, initialCameraPosition.z);
+        camera.lookAt(0, 2, 0);
       }
-      
 
       scene.add(object);
     },
@@ -89,57 +90,73 @@ modelConfigs.forEach((config) => {
 });
 
 // Instantiate a new renderer and set its size
-const renderer = new THREE.WebGLRenderer({ alpha: true }); // Alpha: true allows for transparent background
+const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 // Set the background color to white
-renderer.setClearColor(0xffffff, 1); // 0xffffff is the hex code for white
+renderer.setClearColor(0xffffff, 1);
 
 // Add the renderer to the DOM
 document.getElementById("container3D").appendChild(renderer.domElement);
 
-// Set the camera position
-camera.position.z = 25;
-
-// Add lights to the scene, so we can actually see the 3D models
-const topLight = new THREE.DirectionalLight(0xffffff, 1); // (color, intensity)
-topLight.position.set(500, 500, 500); // Top-left-ish
+// Add lights to the scene
+const topLight = new THREE.DirectionalLight(0xffffff, 1);
+topLight.position.set(500, 500, 500);
 topLight.castShadow = true;
 scene.add(topLight);
 
 const ambientLight = new THREE.AmbientLight(0x333333, 1);
 scene.add(ambientLight);
 
-// This adds controls to the camera, so we can rotate / zoom it with the mouse
-controls = new OrbitControls(camera, renderer.domElement);
+// Add camera controls
+const controls = new OrbitControls(camera, renderer.domElement);
+
+// Event listeners for buttons
+document.getElementById("startStopButton").addEventListener("click", () => {
+  isCarMoving = !isCarMoving;
+  document.getElementById("startStopButton").textContent = isCarMoving ? "Stop" : "Start";
+});
+
+document.getElementById("resetButton").addEventListener("click", () => {
+  if (carObject) {
+    carObject.position.set(initialCarPosition.x, initialCarPosition.y, initialCarPosition.z);
+    camera.position.set(initialCameraPosition.x, initialCameraPosition.y, initialCameraPosition.z);
+    camera.lookAt(0, 2, 0);
+    carSpeed = defaultCarSpeed;
+    document.getElementById("carSpeed").value = defaultCarSpeed;
+  }
+});
+
+const speedScalingFactor = 100 / 30;
+
+document.getElementById("applyButton").addEventListener("click", () => {
+  const inputSpeed = parseFloat(document.getElementById("carSpeed").value);
+  if (!isNaN(inputSpeed) && inputSpeed > 0) {
+    carSpeed = inputSpeed * speedScalingFactor;
+  } else {
+    alert("Please enter a valid positive number for speed.");
+    document.getElementById("carSpeed").value = carSpeed / speedScalingFactor;
+  }
+});
 
 // Render the scene
 function animate() {
   requestAnimationFrame(animate);
 
-  // Move the car forward if it's loaded
-  if (carObject) {
-    carObject.position.z -= 1; // Move the car along the Z-axis
+  if (carObject && isCarMoving) {
+    carObject.position.z -= carSpeed * 0.01;
   }
 
   renderer.render(scene, camera);
 }
 
-
-// Add a listener to the window, so we can resize the window and the camera
 window.addEventListener("resize", function () {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// Add mouse position listener, so we can make the eye move (if you have such a model)
-document.onmousemove = (e) => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-}
-
-// Start the 3D rendering
+// Start rendering
 animate();
 export function getCamera(){
   return camera; 
