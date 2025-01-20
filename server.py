@@ -132,7 +132,7 @@ client.loop_start()
 try:
     while True:
         check_and_send(client, path)
-        time.sleep(10)
+        time.sleep(0.1)
 except KeyboardInterrupt:
     print("Program je koncan")
     client.loop_stop()
