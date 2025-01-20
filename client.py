@@ -116,13 +116,16 @@ def on_message(client, userdata, msg):
         if len(img_data) == 0:
             print("slika je prazna...")
         
-        decomp_img = dekompresiraj(img_data) # decompress img
-        
-        if decomp_img is not None:
-            #cv2.imshow("Prejeta slika", decomp_img)     # to show img
+        #decomp_img = dekompresiraj(img_data) # decompress img  # with decompress
+        img_array = np.frombuffer(img_data, dtype=np.uint8)     # without decompress
+        decoded_img = cv2.imdecode(img_array, cv2.IMREAD_COLOR) # without decompress
+        #if decomp_img is not None:                             # with decompress
+        if decoded_img is not None:
+            #cv2.imshow("Prejeta slika", decomp_img)     # to show img - check if decode_img or decomp_img
             print("Prejeta slika...")
             #cv2.waitKey(1)                              # waiting for image to be rendered
-            if detected(decomp_img):
+            #if detected(decomp_img):                           # without decompress
+            if detected(decoded_img):                              # with decompress
                 message = "PAZI PESEC!"
             else:
                 message = "NI NEVARNOSTI..."

@@ -107,10 +107,11 @@ def check_and_send(client, path):
                     try:
                         with open(img_path, "rb") as img:
                             img_data = img.read()
-                            img_array = np.frombuffer(img_data, dtype=np.uint8)
-                            decoded_img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
-                            comp_img = kompresiraj(decoded_img)
-                            client.publish(topic, comp_img)
+                            #img_array = np.frombuffer(img_data, dtype=np.uint8)      # with compress
+                            #decoded_img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)  # with compress
+                            #comp_img = kompresiraj(decoded_img)                      # with compress
+                            #client.publish(topic, comp_img)                          # with compress
+                            client.publish(topic, img_data)
                             print(f"Slika {file} poslana.")
                     except Exception as e:
                         print(f"Napaka pri posiljanju slike {file}: {e}")
