@@ -32,9 +32,8 @@ def on_message(client, userdata, msg):
         # adding code for saving this message
         # and showing it in js aplication as a result
         # of yolov5s model as a bonus
-        # ...
-        # ...
-        # ...
+        with open("results.txt", "w") as file:
+            file.write(msg.payload.decode())
 
 # ------------------------------------- COMPRESS ----------------
 def Encode(B, g, diff):
