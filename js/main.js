@@ -1,9 +1,10 @@
 // Import the THREE.js library
 import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
-// To allow for the camera to move around the scene
-import { OrbitControls } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/controls/OrbitControls.js";
 // To allow for importing the .gltf file
 import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
+
+// Store the start time for the website load
+const pageLoadStartTime = performance.now();
 
 // Create a Three.JS Scene
 const scene = new THREE.Scene();
@@ -15,15 +16,18 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 let mouseX = window.innerWidth / 2;
 let mouseY = window.innerHeight / 2;
 
-// OrbitControls allow the camera to move around the scene
 // Variables for car movement
 let isCarMoving = false; // To track if the car is moving
 let carObject = null; // Reference for the car (kabina)
 let carSpeed = 30; // Default speed
-const defaultCarSpeed = 30; // Default speed for reset
+
+let pedestrianObject = null;
+let cyclistObject = null;
+const pedestrianSpeed = 5;
+const cyclistSpeed = 8;
 
 // Store the initial positions for reset
-const initialCarPosition = { x: 80, y: 3, z: 500 };
+const initialCarPosition = { x: 70, y: 3, z: 1100 };
 const initialCameraPosition = { x: -50, y: 25, z: 60 };
 
 // List of models to load
@@ -41,23 +45,50 @@ const modelConfigs = [
     rotation: { x: 0, y: 0, z: 0 }
   },
   {
-    name: "kolesar",
-    position: { x: 100, y: 11, z: 200 },
+    name: "kolesar1",
+    position: { x: -80, y: 8.5, z: 200 },
     scale: { x: 1, y: 1, z: 1 },
     rotation: { x: 0, y: Math.PI, z: 0 }
   },
   {
-    name: "pesec",
-    position: { x: -80, y: 5, z: -500 },
+    name: "kolesar2",
+    position: { x: 60, y: 8.5, z: -1600 },
+    scale: { x: 1, y: 1, z: 1 },
+    rotation: { x: 0, y: Math.PI * 2, z: 0 }
+  },
+  {
+    name: "pesec1",
+    position: { x: -70, y: 4.5, z: -1340 },
+    scale: { x: 1, y: 1, z: 1 },
+    rotation: { x: 0, y: Math.PI / 2, z: 0 }
+  },
+  {
+    name: "pesec2",
+    position: { x: 75, y: 4.5, z: -600 },
+    scale: { x: 1, y: 1, z: 1 },
+    rotation: { x: 0, y: Math.PI * 2, z: 0 }
+  },
+  {
+    name: "pesec3",
+    position: { x: -70, y: 4.5, z: -500 },
     scale: { x: 1, y: 1, z: 1 },
     rotation: { x: 0, y: Math.PI, z: 0 }
+  },
+  {
+    name: "pesec4",
+    position: { x: -30, y: 4.5, z: -1800 },
+    scale: { x: 1, y: 1, z: 1 },
+    rotation: { x: 0, y: Math.PI / 2, z: 0 }
   }
 ];
 
 // Instantiate a loader for the .gltf file
 const loader = new GLTFLoader();
 
+// Track the start time for each model load
 modelConfigs.forEach((config) => {
+  const modelLoadStartTime = performance.now(); // Start time for each model
+
   loader.load(
     `./models/${config.name}/scene.gltf`,
     function (gltf) {
@@ -68,13 +99,25 @@ modelConfigs.forEach((config) => {
 
       if (config.name === "kabina") {
         carObject = object;
-
         carObject.add(camera);
         camera.position.set(initialCameraPosition.x, initialCameraPosition.y, initialCameraPosition.z);
-        camera.lookAt(0, 2, 0);
+      } else if (config.name === "pesec4") {
+        if (!pedestrianObject) {
+          pedestrianObject = [];
+        }
+        pedestrianObject.push(object);
+      } else if (config.name === "kolesar" || config.name === "kolesar2") {
+        if (!cyclistObject) {
+          cyclistObject = [];
+        }
+        cyclistObject.push(object);
       }
 
       scene.add(object);
+
+      const modelLoadEndTime = performance.now();
+      const modelLoadTime = (modelLoadEndTime - modelLoadStartTime).toFixed(2);
+      console.log(`${config.name} loaded in ${modelLoadTime}ms`);
     },
     function (xhr) {
       console.log(`${config.name} ${(xhr.loaded / xhr.total * 100).toFixed(2)}% loaded`);
@@ -104,9 +147,6 @@ scene.add(topLight);
 const ambientLight = new THREE.AmbientLight(0x333333, 1);
 scene.add(ambientLight);
 
-// Add camera controls
-const controls = new OrbitControls(camera, renderer.domElement);
-
 // Event listeners for buttons
 document.getElementById("startStopButton").addEventListener("click", () => {
   isCarMoving = !isCarMoving;
@@ -117,21 +157,20 @@ document.getElementById("resetButton").addEventListener("click", () => {
   if (carObject) {
     carObject.position.set(initialCarPosition.x, initialCarPosition.y, initialCarPosition.z);
     camera.position.set(initialCameraPosition.x, initialCameraPosition.y, initialCameraPosition.z);
-    camera.lookAt(0, 2, 0);
-    carSpeed = defaultCarSpeed;
-    document.getElementById("carSpeed").value = defaultCarSpeed;
+
+    isCarMoving = false;
+    document.getElementById("startStopButton").textContent = "Start";
+    document.getElementById("carSpeed").value = carSpeed;
   }
 });
-
-const speedScalingFactor = 100 / 30;
 
 document.getElementById("applyButton").addEventListener("click", () => {
   const inputSpeed = parseFloat(document.getElementById("carSpeed").value);
   if (!isNaN(inputSpeed) && inputSpeed > 0) {
-    carSpeed = inputSpeed * speedScalingFactor;
+    carSpeed = inputSpeed;
   } else {
     alert("Please enter a valid positive number for speed.");
-    document.getElementById("carSpeed").value = carSpeed / speedScalingFactor;
+    document.getElementById("carSpeed").value = carSpeed;
   }
 });
 
@@ -140,8 +179,23 @@ function animate() {
   requestAnimationFrame(animate);
 
   if (carObject && isCarMoving) {
-    carObject.position.z -= carSpeed * 0.01;
+    carObject.position.z -= carSpeed * 0.05;
+
+    // Log the car's current position in real-time
+    console.log(`Car position: x=${carObject.position.x.toFixed(2)}, y=${carObject.position.y.toFixed(2)}, z=${carObject.position.z.toFixed(2)}`);
   }
+
+  if (pedestrianObject && isCarMoving) {
+    pedestrianObject.forEach(pedestrian => {
+      pedestrian.position.z -= pedestrianSpeed * 0.05;
+    });
+  }
+  
+  if (cyclistObject && isCarMoving) {
+    cyclistObject.forEach(cyclist => {
+      cyclist.position.z -= cyclistSpeed * 0.05;
+    });
+  }  
 
   renderer.render(scene, camera);
 }
@@ -152,14 +206,35 @@ window.addEventListener("resize", function () {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
+window.addEventListener("keydown", function (event) {
+  if (event.code === "Space") {
+    // Prevent the default behavior of the Space bar (scrolling, etc.)
+    event.preventDefault();
+
+    // Toggle the movement state
+    isCarMoving = !isCarMoving;
+
+    // Update the button text
+    document.getElementById("startStopButton").textContent = isCarMoving ? "Stop" : "Start";
+  }
+});
+
+// Calculate total page load time after all assets are loaded
+window.addEventListener("load", () => {
+  const pageLoadEndTime = performance.now();
+  const totalPageLoadTime = (pageLoadEndTime - pageLoadStartTime).toFixed(2);
+  console.log(`Page loaded in ${totalPageLoadTime}ms`);
+});
+
 // Start rendering
 animate();
-export function getCamera(){
-  return camera; 
+
+export function getCamera() {
+  return camera;
 }
-export function getScene(){
+export function getScene() {
   return scene;
 }
-export function getCarObject(){
+export function getCarObject() {
   return carObject;
 }

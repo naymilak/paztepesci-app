@@ -12,7 +12,6 @@
     </main>
 
     <div id="taskbar">
-
       <div class="left">
         <p>Settings:</p>
         <button id="applyButton">Apply</button>
@@ -21,11 +20,7 @@
       <div class="middle">
         <div class="input-group">
           <label for="carSpeed">Car speed [km/h]:</label>
-          <input type="text" id="carSpeed" placeholder="Enter speed" value="30" min="1 "/>
-        </div>
-        <div class="input-group">
-          <label for="showLine">Show line:</label>
-          <input type="checkbox" id="showLine" />
+          <input type="text" id="carSpeed" placeholder="Enter speed" value="30" min="1 " />
         </div>
       </div>
 
@@ -42,5 +37,17 @@
     <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
     <script type="module" src="js/main.js"></script>
     <script type="module" src="js/server.js"></script>
+    <script>
+      window.onload = function () {
+        const startTime = performance.now(); // Measure page load start time
+        console.log("Page loading started at:", startTime);
+    
+        window.addEventListener('load', function () {
+          const endTime = performance.now(); // Measure page load end time
+          const loadTime = (endTime - startTime).toFixed(2); // Calculate total load time
+          console.log("Page loaded in: " + loadTime + "ms");
+        });
+      };
+    </script>    
   </body>
 </html>
